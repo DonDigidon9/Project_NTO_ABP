@@ -5,7 +5,7 @@ from section_commerce import section_commerce
 from section_production import section_production
 from timber_products import timber_products
 
-def service():
+def service(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
@@ -32,15 +32,15 @@ def service():
             break
         if event == "Коммерция":
             window.Hide()
-            section_commerce()
+            section_commerce(app)
             window.UnHide()
         elif event == "Производство":
             window.Hide()
-            section_production()
+            section_production(app)
             window.UnHide()
         elif event == "Технолог":
             window.Hide()
-            timber_products()
+            timber_products(app)
             window.UnHide()
 
     window.close()

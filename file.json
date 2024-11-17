@@ -1,0 +1,22 @@
+{
+    "customers_": [
+        {
+            "organization": "test name",
+            "fio": "test fio",
+            "add_data": "test data",
+            "comment": "test comment"
+        }
+    ],
+    "orders_": [
+        {
+            "data_registration": "data reg",
+            "data_completion": "data comp",
+            "customer": "test",
+            "timber_product": "111",
+            "cnt_timber_product": 11,
+            "comment": "comment",
+            "status": "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a"
+        }
+    ],
+    "timber_products_": []
+}
