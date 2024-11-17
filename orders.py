@@ -115,6 +115,6 @@ def orders(app):
             product_amount = selected_order['quantity']
             status =  selected_order['status']
             comment = selected_order['comment']
-            orders_add(order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
+            orders_add(app, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
 
     window.close()
