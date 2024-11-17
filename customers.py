@@ -14,18 +14,23 @@ def customers(app):
 
     title = 'ЗАО "Лесозавод №10 Белка"'
 
+    mas_customers = []
+    for customer in app.customers_:
+        mas_customers.append(
+            customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer[
+                'comment'])
+
     layout = [
         [sg.Text("Клиенты", justification='center', font=font_title, size=(monitor.width, 5),
                  pad=((0, 0), (50, 0)))],
-        [sg.Text("Организация / ФИО / дата начала сотрудничества", font=font_button), sg.Button("Добавить", font=font_button)],
-        [], # список клиентов
+        [sg.Text("Организация / ФИО / дата начала сотрудничества", font=font_button),
+         sg.Button("Добавить", font=font_button)],
+        [sg.Listbox(mas_customers, size=(monitor.width, 10), font=font_button)],  # список клиентов
         [sg.Button("Назад", font=font_button)]
     ]
 
-    # TODO: заполнение списка клиентов из БД
-    layout[2].append(sg.Listbox(["Компания1 / Фамилия Имя Отчество 1 / Некая дата"], size=(monitor.width, 10), font=font_button))
-
     size_layout = (monitor.width, monitor.height)
+
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
     window.finalize()
 

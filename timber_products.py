@@ -15,9 +15,9 @@ def timber_products(app):
         [sg.Text("Виды лесопродукции", justification='center', font=font_title, size=(monitor.width, 2),
                  pad=((0, 0), (50, 0)))],
         # [sg.Canvas(background_color='purple', size=(int(9*monitor.width/10), int(8*monitor.height/10)), pad=((50, 0), (0, 0)))],
-        [sg.Button("Добавить", font=font_button)],
+        [sg.Button("Добавить", font=font_button, border_width=5)],
         [], # для списка лесопродукции
-        [sg.Button("Назад", font=font_button, pad=((0, 0), (0, 10)))]
+        [sg.Button("Назад", font=font_button, pad=((0, 0), (0, 10)), border_width=5)]
     ]
 
     # TODO: заполнение всей лесопродукцией из БД

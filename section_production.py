@@ -17,9 +17,9 @@ def section_production(app):
     layout = [
         [sg.Text("Выберите раздел", justification='center', font=font_title, size=(monitor.width, 5),
                  pad=((0, 0), (50, 0)))],
-        [sg.Push(), sg.Button("Виды лесопродукции", size=size_button, font=font_button),
-         sg.Button("Заказы", size=size_button, font=font_button), sg.Push()],
-        [sg.Button("Назад", font=font_button)]
+        [sg.Push(), sg.Button("Виды лесопродукции", size=size_button, font=font_button, border_width=5),
+         sg.Button("Заказы", size=size_button, font=font_button, border_width=5), sg.Push()],
+        [sg.Button("Назад", font=font_button, border_width=5)]
     ]
 
     size_layout = (monitor.width, monitor.height)

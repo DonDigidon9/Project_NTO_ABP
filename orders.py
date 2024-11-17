@@ -78,7 +78,7 @@ def orders(app):
         color = get_color_by_status(order["status"])
         # Добавление кнопки
         listbox_elements.append(
-            [sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5))]
+            [sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)]
         )
 
     # Макет интерфейса
