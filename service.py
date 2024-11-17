@@ -17,9 +17,9 @@ def service():
 
     layout = [
         [sg.Text("Выберите службу", justification='center', font=font_title, size=(monitor.width, 5), pad=((0, 0), (50, 0)))],
-        [sg.Button("Коммерция", size=size_button, font=font_button),
-         sg.Button("Производство", size=size_button, font=font_button),
-         sg.Button("Технолог", size=size_button, font=font_button)]
+        [sg.Push(), sg.Button("Коммерция", size=size_button, font=font_button, border_width=5),
+         sg.Button("Производство", size=size_button, font=font_button, border_width=5),
+         sg.Button("Технолог", size=size_button, font=font_button, border_width=5), sg.Push()]
     ]
 
     size_layout = (monitor.width, monitor.height)

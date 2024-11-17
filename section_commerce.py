@@ -18,10 +18,11 @@ def section_commerce():
     layout = [
         [sg.Text("Выберите раздел", justification='center', font=font_title, size=(monitor.width, 5),
                  pad=((0, 0), (50, 0)))],
-        [sg.Button("Клиенты", size=size_button, font=font_button),
+        [sg.Push(), sg.Button("Клиенты", size=size_button, font=font_button),
          sg.Button("Виды лесопродукции", size=size_button, font=font_button),
-         sg.Button("Заказы", size=size_button, font=font_button)],
-        [sg.Button("Назад", font=font_button)]
+         sg.Button("Заказы", size=size_button, font=font_button), sg.Push()],
+        [sg.Push()],
+        [sg.Button("Назад", font=font_button), sg.Push()]
     ]
 
     size_layout = (monitor.width, monitor.height)

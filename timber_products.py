@@ -17,11 +17,11 @@ def timber_products():
         # [sg.Canvas(background_color='purple', size=(int(9*monitor.width/10), int(8*monitor.height/10)), pad=((50, 0), (0, 0)))],
         [sg.Button("Добавить", font=font_button)],
         [], # для списка лесопродукции
-        [sg.Button("Назад", font=font_button)]
+        [sg.Button("Назад", font=font_button, pad=((0, 0), (0, 10)))]
     ]
 
     # TODO: заполнение всей лесопродукцией из БД
-    layout[2].append(sg.Listbox(["Рейки"], size=(monitor.width, 20), font=font_button))
+    layout[2].append(sg.Listbox(["Рейки"], size=(monitor.width, 10), font=font_button))
 
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
