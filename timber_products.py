@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 from screeninfo import get_monitors
 
-def timber_products():
+def timber_products(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 

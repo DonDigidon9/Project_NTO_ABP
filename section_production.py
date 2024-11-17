@@ -4,7 +4,7 @@ from screeninfo import get_monitors
 from orders import orders
 from timber_products import timber_products
 
-def section_production():
+def section_production(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
@@ -32,11 +32,11 @@ def section_production():
             raise SystemExit(1)
         if event == "Виды лесопродукции":
             window.Hide()
-            timber_products()
+            timber_products(app)
             window.UnHide()
         elif event == "Заказы":
             window.Hide()
-            orders()
+            orders(app)
             window.UnHide()
         elif event == "Назад":
             window.close()

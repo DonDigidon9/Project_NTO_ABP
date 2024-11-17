@@ -4,7 +4,7 @@ from screeninfo import get_monitors
 from customer_add import customers_add
 
 
-def customers():
+def customers(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
@@ -36,7 +36,7 @@ def customers():
 
         if event == "Добавить":
             window.Hide()
-            customers_add()
+            customers_add(app)
             window.UnHide()
         elif event == "Назад":
             window.close()
