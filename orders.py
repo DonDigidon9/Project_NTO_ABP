@@ -100,27 +100,22 @@ def orders():
 
         if event == "Добавить":
             window.Hide()
-            orders_add()
+            orders_add("", "", "", "", "", "", "")
             window.UnHide()
 
         elif event == "Назад":
             break
 
         elif event.startswith("-ORDER-"):
-            # Получение индекса заказа
             order_index = int(event.split("-")[-2])
             selected_order = orders_data[order_index]
-            # Вывод информации о заказе
-            sg.popup(
-                f"Детали заказа:\n\n"
-                f"Дата регистрации: {selected_order['registration_date']}\n"
-                f"Дата выполнения: {selected_order['completion_date']}\n"
-                f"Заказчик: {selected_order['customer']}\n"
-                f"Продукция: {selected_order['product']}\n"
-                f"Количество: {selected_order['quantity']}\n"
-                f"Статус: {selected_order['status']}\n"
-                f"Комментарий: {selected_order['comment']}",
-                title="Информация о заказе"
-            )
+            order_register_date = selected_order['registration_date']
+            order_accomplishment_date = selected_order['completion_date']
+            customer_name = selected_order['customer']
+            timer_product =  selected_order['product']
+            product_amount = selected_order['quantity']
+            status =  selected_order['status']
+            comment = selected_order['comment']
+            orders_add(order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
 
     window.close()
