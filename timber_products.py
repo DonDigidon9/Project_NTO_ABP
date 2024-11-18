@@ -10,8 +10,6 @@ def timber_products(app):
 
     title = 'ЗАО "Лесозавод №10 Белка"'
 
-    # app.timber_products_ = [TimberProducts("Сырые пиломатериалы"), TimberProducts("Сухие пиломатериалы"), TimberProducts("Строгранные доски"), TimberProducts("Рейки"), TimberProducts("Брус"), TimberProducts("Пеллеты")]
-
     mas_timber_products = []
     for timber_product in app.timber_products_:
         mas_timber_products.append(timber_product['name'])
@@ -19,11 +17,11 @@ def timber_products(app):
     layout = [
         [sg.Text("Виды лесопродукции", justification='center', font=font_title, size=(monitor.width, 2),
                  pad=((0, 0), (50, 0)))],
-        [sg.Listbox(mas_timber_products, size=(monitor.width, 10), font=font_button)], # для списка лесопродукции
+        [sg.Listbox(mas_timber_products, size=(monitor.width, 10), font=font_button)],
         [sg.Button("Назад", font=font_button, pad=((0, 0), (0, 10)), border_width=5)]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:

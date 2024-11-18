@@ -16,8 +16,7 @@ def section_commerce(app):
     title = 'ЗАО "Лесозавод №10 Белка"'
 
     layout = [
-        [sg.Text("Выберите раздел", justification='center', font=font_title, size=(monitor.width, 5),
-                 pad=((0, 0), (50, 0)))],
+        [sg.Text("Коммерция. Выберите раздел", justification='center', font=font_title, size=(monitor.width, 5), pad=((0, 0), (50, 0)))],
         [sg.Push(), sg.Button("Клиенты", size=size_button, font=font_button, border_width=5),
          sg.Button("Виды лесопродукции", size=size_button, font=font_button, border_width=5),
          sg.Button("Заказы", size=size_button, font=font_button, border_width=5), sg.Push()],
@@ -25,7 +24,7 @@ def section_commerce(app):
         [sg.Button("Назад", font=font_button, border_width=5), sg.Push()]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:

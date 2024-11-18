@@ -22,7 +22,7 @@ def service(app):
          sg.Button("Технолог", size=size_button, font=font_button, border_width=5), sg.Push()]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:
@@ -32,17 +32,14 @@ def service(app):
         if event == "Коммерция":
             window.Hide()
             app = section_commerce(app)
-            print(f'commerce -> {app}')
             window.UnHide()
         elif event == "Производство":
             window.Hide()
             app = section_production(app)
-            print(f'production -> {app}')
             window.UnHide()
         elif event == "Технолог":
             window.Hide()
             timber_products(app)
-            print(app)
             window.UnHide()
 
     window.close()

@@ -3,7 +3,6 @@ from screeninfo import get_monitors
 
 from order_add import orders_add
 
-
 def orders(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
@@ -58,7 +57,7 @@ def orders(app):
         [sg.Button("Добавить", font=font_button, size=(15, 1)), sg.Button("Назад", font=font_button, size=(15, 1))]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:
