@@ -106,7 +106,7 @@ def orders_add(app,
             )
             app.orders_.append(new_order)
             json_data = json.dumps(asdict(app), indent=4)
-            with open("file.json", "w") as file:
+            with open(".venv/file.json", "w") as file:
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))
