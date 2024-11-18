@@ -68,12 +68,28 @@ def orders_add(app,
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
 
+    selected_data_reg = None
+    selected_data_com = None
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             raise SystemExit(1)
 
         if event == "Сохранить":
+            if ((selected_data_reg is None) or (selected_data_com is None) or
+                    (selected_data_reg[2] > selected_data_com[2]) or
+                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
+                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1]) or
+                    (type(values['-INPUT-']) not in (int, float))):
+                layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=font_button)],[sg.OK(key='-OK-')]]
+                window_fail = sg.Window("", layout_fail)
+
+                while True:
+                    event_fail, values_fail = window_fail.read()
+                    if event_fail in (sg.WIN_CLOSED, '-OK-'):
+                        break
+                window_fail.close()
+                continue
             new_order = Order(
                 data_registration=values['-DATA_REGISTRATION-'],
                 data_completion=values['-DATA_COMPLETION-'],
@@ -90,13 +106,13 @@ def orders_add(app,
             window.close()
             return app
         elif event == '-DATA_REG-':
-            selected_data = sg.popup_get_date()
-            if selected_data:
-                window['-DATA_REGISTRATION-'].update(f'{selected_data[1]}.{selected_data[0]}.{selected_data[2]}')
+            selected_data_reg = sg.popup_get_date()
+            if selected_data_reg:
+                window['-DATA_REGISTRATION-'].update(f'{selected_data_reg[1]}.{selected_data_reg[0]}.{selected_data_reg[2]}')
         elif event == '-DATA_COM-':
-            selected_data = sg.popup_get_date()
-            if selected_data:
-                window['-DATA_COMPLETION-'].update(f'{selected_data[1]}.{selected_data[0]}.{selected_data[2]}')
+            selected_data_com = sg.popup_get_date()
+            if selected_data_com:
+                window['-DATA_COMPLETION-'].update(f'{selected_data_com[1]}.{selected_data_com[0]}.{selected_data_com[2]}')
         elif event == "Назад":
             window.close()
             return app
