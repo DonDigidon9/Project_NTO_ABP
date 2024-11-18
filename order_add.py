@@ -19,7 +19,6 @@ def orders_add(app,
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
-    size_button = (25, 5)
     font_title = ('New Roman', 30)
     font_button = ('New Roman', 20)
 
@@ -34,6 +33,13 @@ def orders_add(app,
         [sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")]
     ]
 
+    mas_customer = []
+    for customer in app.customers_:
+        mas_customer.append(customer['organization'])
+    mas_timber_product = []
+    for timber_product in app.timber_products_:
+        mas_timber_product.append(timber_product['name'])
+    mas_status = ['Черновик', 'Согласован с клиентом', 'Принят в производство', 'Выполнен']
     title_window = "Добавить заказ"
     if order_register_date_fill != "":
         title_window = "Изменить заказ"
@@ -43,17 +49,17 @@ def orders_add(app,
                  pad=((0, 0), (10, 0)))],
         [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-', disabled_readonly_background_color='green', disabled=True),
-         sg.Button("Выбрать дату", font=font_button, key='-DATA_REG-'),
+         sg.Button("Дата", font=font_button, key='-DATA_REG-'),
          sg.Push(),
          sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-', disabled_readonly_background_color='green', disabled=True),
-         sg.Button("Выбрать дату", font=font_button, key='-DATA_COM-')],
+         sg.Button("Дата", font=font_button, key='-DATA_COM-')],
         [sg.Push()],
-        [sg.Text("Заказчик:", font=font_button, size=(25, 2)), sg.Listbox([''' список заказчиков'''], font=font_button, size=(100, 2))],
-        [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)), sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2))],
-        [sg.Text("Количество лесопродукции", font=font_button, size=(25, 2)), sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")],
-        [sg.Text("Статус:", font=font_button, size=(25, 2)), sg.Listbox([''' список статусов'''], font=font_button, size=(100, 2))],
-        [sg.Text("Комментарий:", font=font_button, size=(25, 2)), sg.Multiline(default_text=comment_fill, font=font_button, size=(100, 5), key='-COMMENT-')],
+        [sg.Text("Заказчик:", font=font_button, size=(25, 2)), sg.Listbox(mas_customer, font=font_button, size=(100, 4))],
+        [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)), sg.Listbox(mas_timber_product, font=font_button, size=(100, 4))],
+        [sg.Text("Количество лесопродукции:", font=font_button, size=(25, 2)), sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")],
+        [sg.Text("Статус:", font=font_button, size=(25, 2)), sg.Listbox(mas_status, font=font_button, size=(100, 4))],
+        [sg.Text("Комментарий:", font=font_button, size=(25, 2)), sg.Multiline(default_text=comment_fill, font=font_button, size=(100, 4), key='-COMMENT-')],
         [sg.Push()],
         [sg.Button("Сохранить", font=font_button)],
         [sg.Button("Назад", font=font_button)]
