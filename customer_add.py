@@ -1,7 +1,9 @@
 import json
 from dataclasses import asdict
+from datetime import datetime
 
 import PySimpleGUI as sg
+from PySimpleGUI import theme
 from screeninfo import get_monitors
 
 from LogicClasses.App import App
@@ -23,8 +25,7 @@ def customers_add(app):
         [sg.Text("Название организации:", font=font_button), sg.InputText(key='-ORGANIZATION-')],
         [sg.Text("ФИО клиента:", font=font_button), sg.InputText(key='-FIO-')],
         [sg.Text("Дата:", font=font_button),
-         sg.InputText(key='-DATA-'),
-         sg.CalendarButton("Календарь", close_when_date_chosen=True, format='%Y-%m-%d', default_date_m_d_y=(16,11,2024))], # TODO: сделать нормальный календарь
+         sg.Input(key='-DATA-', enable_events=True), sg.Button("Выбрать дату", font=font_button)], # TODO: сделать нормальную блокировку ввода даты (только по календарю)
         [sg.Text("Комментарий", font=font_button), sg.InputText(key='-COMMENT-')],
         [sg.Button("Сохранить", font=font_button, button_color='green')],
         [sg.Button("Назад", font=font_button)]
@@ -47,6 +48,18 @@ def customers_add(app):
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))
+        elif event == "Выбрать дату":
+            selected_date = sg.popup_get_date()
+            if selected_date:
+                print(selected_date)
+                window['-DATA-'].update(f'{selected_date[1]}.{selected_date[0]}.{selected_date[2]}')
+        elif values['-CALENDAR-']:
+            try:
+                datetime.strftime(values['-CALENDAR-'], "%d.%m.%Y")
+                window['-DATA-'].update("YES")
+            except ValueError:
+                window['-DATA-'].update("NO")
+
         elif event == "Назад":
             window.close()
             return app
