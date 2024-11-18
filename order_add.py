@@ -114,6 +114,14 @@ def orders_add(app,
                 open_window_fail()
                 continue
             if title_window == "Добавить заказ":
+                if len(values['-STATUS_LISTBOX-']) != 0:
+                    if values['-STATUS_LISTBOX-'][0] in ('Принят в производство', 'Выполнен'):
+                        open_window_fail()
+                        continue
+                    if values['-STATUS_LISTBOX-'][0] == 'Согласован с клиентом':
+                        if len(values['-CUSTOMER_LISTBOX-']) == 0 or len(values['-TIMBER_LISTBOX-']) == 0 or len(str(cnt)) == 0:
+                            open_window_fail()
+                            continue
                 new_order = Order(
                     uid=uuid.uuid4().hex,
                     data_registration=values['-DATA_REGISTRATION-'],
@@ -121,13 +129,18 @@ def orders_add(app,
                     customer=values['-CUSTOMER_LISTBOX-'][0] if len(customer_name_fill) == 0 and len(values['-CUSTOMER_LISTBOX-']) != 0 else "",
                     timber_product=values['-TIMBER_LISTBOX-'][0] if len(values['-TIMBER_LISTBOX-']) != 0 else "",
                     cnt_timber_product=cnt,
-                    comment=values['-COMMENT-'][0] if len(values['-COMMENT-']) != 0 else "",
+                    comment=values['-COMMENT-'] if len(values['-COMMENT-']) != 0 else "",
                     status=values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик")
                 app.orders_.append(new_order)
             else:
+                if len(values['-STATUS_LISTBOX-']) != 0:
+                    if values['-STATUS_LISTBOX-'][0] in ('Согласован с клиентом', 'Принят в производство', 'Выполнен'):
+                        if len(values['-CUSTOMER_LISTBOX-']) == 0 or len(values['-TIMBER_LISTBOX-']) == 0 or len(str(cnt)) == 0:
+                            open_window_fail()
+                            continue
                 index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
                 app.orders_[index]['customer'] = customer_name_fill if len(customer_name_fill) != 0 else values['-CUSTOMER_LISTBOX-'][0]
-                app.orders_[index]['timber_product'] = timer_product_fill if len(timer_product_fill) != 0 else values['TIMBER_LISTBOX'][0]
+                app.orders_[index]['timber_product'] = timer_product_fill if len(timer_product_fill) != 0 else values['-TIMBER_LISTBOX-'][0]
                 app.orders_[index]['cnt_timber_product'] = cnt
                 app.orders_[index]['comment'] = comment_fill if len(comment_fill) != 0 else values['-COMMENT-']
                 app.orders_[index]['status'] = values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик"
