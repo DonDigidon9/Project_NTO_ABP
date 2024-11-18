@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict
+from email.policy import default
 
 import PySimpleGUI as sg
 from screeninfo import get_monitors
@@ -24,16 +25,27 @@ def orders_add(app,
 
     title = 'ЗАО "Лесозавод №10 Белка"'
 
+    headers = ["Заказчик:", "Статус:", "Вид лесопродукции:", "Количество лесопродукции:"]
+    headers_column = [[sg.Text(header, font=font_button, size=(25, 2))] for header in headers]
+    listbox_column = [
+        [sg.Listbox([''' список заказчиков'''], font=font_button, size=(100, 2))],
+        [sg.Listbox([''' список статусов'''], font=font_button, size=(100, 2))],
+        [sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2))],
+        [sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")]
+    ]
+
     layout = [
-        [sg.Text("Добавить заказ", justification='center', font=font_title, size=(monitor.width, 5),
-                 pad=((0, 0), (50, 0)))],
-        [sg.Text("Дата регистрации заказа:", font=font_button), sg.InputText(default_text=order_register_date_fill, key='-DATA_REGISTRATION-'),
-         sg.Text("Дата выполнения заказа:", font=font_button), sg.InputText(default_text=order_accomplishment_date_fill, key='-DATA_COMPLETION-')],
-        [sg.Text("Заказчик:", font=font_button), sg.Listbox([''' список клиентов'''], font=font_button, size=(100, 2))],
-        [sg.Text("Вид лесопродукции:", font=font_button), sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2)),
-         sg.Text("Количество продукции:", font=font_button), sg.InputText(default_text=product_amount_fill)],
-        [sg.Text("Комментарий:", font=font_button), sg.InputText(default_text=comment_fill, key='-COMMENT-')],
-        [sg.Text("Статус:", font=font_button), sg.Listbox([''' список возможных статусов'''], font=font_button, size=(100, 2))],
+        [sg.Text("Добавить заказ", justification='center', font=font_title, size=(monitor.width, 2),
+                 pad=((0, 0), (10, 0)))],
+        [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-'), sg.Push(),
+         sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-')],
+        [sg.Push()],
+        [sg.Text("Заказчик:", font=font_button, size=(25, 2)), sg.Listbox([''' список заказчиков'''], font=font_button, size=(100, 2))],
+        [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)), sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2))],
+        [sg.Text("Количество лесопродукции", font=font_button, size=(25, 2)), sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")],
+        [sg.Text("Статус:", font=font_button, size=(25, 2)), sg.Listbox([''' список статусов'''], font=font_button, size=(100, 2))],
+        [sg.Text("Комментарий:", font=font_button, size=(25, 2)), sg.Multiline(default_text=comment_fill, font=font_button, size=(100, 5), key='-COMMENT-')],
+        [sg.Push()],
         [sg.Button("Сохранить", font=font_button)],
         [sg.Button("Назад", font=font_button)]
     ]
