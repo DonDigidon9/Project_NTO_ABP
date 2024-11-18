@@ -18,10 +18,12 @@ def customers_add(app):
     title = 'ЗАО "Лесозавод №10 Белка"'
 
     layout = [
-        [sg.Text("Добавить клиента(заказчика)", justification='center', font=font_title, size=(monitor.width, 5),
-                 pad=((0, 0), (50, 0)))],
-        [sg.Text("Название организации:", font=font_button), sg.InputText(key='-ORGANIZATION-')],
-        [sg.Button("Сохранить", font=font_button, button_color='green')],
+        [sg.Text("Добавить клиента(заказчика)", justification='center', font=font_title, size=(monitor.width, 3),
+                 pad=((0, 0), (20, 0)))],
+        [sg.Text("Название организации:", font=font_button), sg.InputText(key='-ORGANIZATION-', font=font_button, size=(monitor.width, 1))],
+        [sg.Push()],
+        [sg.Text('', size=(monitor.width, 4))],
+        [sg.Button("Сохранить", font=font_button)],
         [sg.Button("Назад", font=font_button)]
     ]
 
