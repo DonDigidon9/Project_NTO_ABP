@@ -3,7 +3,6 @@ from screeninfo import get_monitors
 
 from order_add import orders_add
 
-
 def orders(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")

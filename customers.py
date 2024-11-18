@@ -3,7 +3,6 @@ from screeninfo import get_monitors
 
 from customer_add import customers_add
 
-
 def customers(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
@@ -21,7 +20,7 @@ def customers(app):
         [sg.Text("Клиенты", justification='center', font=font_title, size=(monitor.width, 5),
                  pad=((0, 0), (50, 0)))],
         [sg.Text("Организация / ФИО / дата начала сотрудничества", font=font_button), sg.Button("Добавить", font=font_button)],
-        [sg.Listbox(mas_customers, size=(monitor.width, 10), font=font_button, key='-LIST-')], # список клиентов
+        [sg.Listbox(mas_customers, size=(monitor.width, 10), font=font_button, key='-LIST-')],
         [sg.Button("Назад", font=font_button)]
     ]
 

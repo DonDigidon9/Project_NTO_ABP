@@ -6,12 +6,12 @@ from screeninfo import get_monitors
 
 from LogicClasses.App import App
 from LogicClasses.Customer import Customer
+from order_add import open_window_fail
 
 def customers_add(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
-    size_button = (25, 5)
     font_title = ('New Roman', 30)
     font_button = ('New Roman', 20)
 
@@ -36,6 +36,9 @@ def customers_add(app):
             raise SystemExit(1)
 
         if event == "Сохранить":
+            if len(values['-ORGANIZATION-']) == 0:
+                open_window_fail()
+                continue
             new_customer = Customer(organization=values['-ORGANIZATION-'])
             app.customers_.append(new_customer)
             json_data = json.dumps(asdict(app), indent=4)

@@ -7,6 +7,16 @@ from screeninfo import get_monitors
 from LogicClasses.App import App
 from LogicClasses.Order import Order
 
+def open_window_fail():
+    layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=('New Roman', 20))], [sg.OK(key='-OK-')]]
+    window_fail = sg.Window("", layout_fail)
+
+    while True:
+        event_fail, values_fail = window_fail.read()
+        if event_fail in (sg.WIN_CLOSED, '-OK-'):
+            break
+    window_fail.close()
+
 def orders_add(app,
         order_register_date_fill,
         order_accomplishment_date_fill,
@@ -57,16 +67,6 @@ def orders_add(app,
 
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
-
-    def open_window_fail():
-        layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=font_button)], [sg.OK(key='-OK-')]]
-        window_fail = sg.Window("", layout_fail)
-
-        while True:
-            event_fail, values_fail = window_fail.read()
-            if event_fail in (sg.WIN_CLOSED, '-OK-'):
-                break
-        window_fail.close()
 
     selected_data_reg = None
     selected_data_com = None
