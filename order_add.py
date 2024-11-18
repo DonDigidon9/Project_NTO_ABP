@@ -24,15 +24,6 @@ def orders_add(app,
 
     title = 'ЗАО "Лесозавод №10 Белка"'
 
-    headers = ["Заказчик:", "Статус:", "Вид лесопродукции:", "Количество лесопродукции:"]
-    headers_column = [[sg.Text(header, font=font_button, size=(25, 2))] for header in headers]
-    listbox_column = [
-        [sg.Listbox([''' список заказчиков'''], font=font_button, size=(100, 2))],
-        [sg.Listbox([''' список статусов'''], font=font_button, size=(100, 2))],
-        [sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2))],
-        [sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")]
-    ]
-
     mas_customer = []
     for customer in app.customers_:
         mas_customer.append(customer['organization'])
@@ -66,7 +57,17 @@ def orders_add(app,
     ]
 
     size_layout = (monitor.width, monitor.height)
-    window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
+    window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
+
+    def open_window_fail():
+        layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=font_button)], [sg.OK(key='-OK-')]]
+        window_fail = sg.Window("", layout_fail)
+
+        while True:
+            event_fail, values_fail = window_fail.read()
+            if event_fail in (sg.WIN_CLOSED, '-OK-'):
+                break
+        window_fail.close()
 
     selected_data_reg = None
     selected_data_com = None
@@ -75,27 +76,26 @@ def orders_add(app,
         if event == sg.WIN_CLOSED:
             raise SystemExit(1)
 
+
         if event == "Сохранить":
             if ((selected_data_reg is None) or (selected_data_com is None) or
                     (selected_data_reg[2] > selected_data_com[2]) or
                     (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
-                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1]) or
-                    (type(values['-INPUT-']) not in (int, float))):
-                layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=font_button)],[sg.OK(key='-OK-')]]
-                window_fail = sg.Window("", layout_fail)
-
-                while True:
-                    event_fail, values_fail = window_fail.read()
-                    if event_fail in (sg.WIN_CLOSED, '-OK-'):
-                        break
-                window_fail.close()
+                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1])):
+                open_window_fail()
+                continue
+            cnt = 0
+            try:
+                cnt = int(values['-INPUT-'])
+            except ValueError:
+                open_window_fail()
                 continue
             new_order = Order(
                 data_registration=values['-DATA_REGISTRATION-'],
                 data_completion=values['-DATA_COMPLETION-'],
                 customer="test",
                 timber_product="111",
-                cnt_timber_product=11,
+                cnt_timber_product=cnt,
                 comment=values['-COMMENT-'],
                 status="Черновик"
             )

@@ -28,7 +28,7 @@ def customers_add(app):
     ]
 
     size_layout = (monitor.width, monitor.height)
-    window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
+    window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:
         event, values = window.read()
