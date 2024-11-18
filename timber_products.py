@@ -23,7 +23,7 @@ def timber_products(app):
         [sg.Button("Назад", font=font_button, pad=((0, 0), (0, 10)), border_width=5)]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:

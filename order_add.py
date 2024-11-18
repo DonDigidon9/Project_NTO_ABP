@@ -66,8 +66,8 @@ def orders_add(app,
         [sg.Button("Назад", font=font_button)]
     ]
 
-    size_layout = (monitor.width, monitor.height)
-    window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
+    size_layout = (monitor.width, monitor.height - 1)
+    window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     selected_data_reg = None
     selected_data_com = None

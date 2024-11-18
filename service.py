@@ -22,7 +22,7 @@ def service(app):
          sg.Button("Технолог", size=size_button, font=font_button, border_width=5), sg.Push()]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     while True:
