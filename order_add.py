@@ -38,10 +38,16 @@ def orders_add(app,
     if order_register_date_fill != "":
         title_window = "Изменить заказ"
     layout = [
+        # TODO: выровнить все элементы и подобрать подходящий цвет для мест с датами
         [sg.Text(title_window, justification='center', font=font_title, size=(monitor.width, 2),
                  pad=((0, 0), (10, 0)))],
-        [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-'), sg.Push(),
-         sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-')],
+        [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)),
+         sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-', disabled_readonly_background_color='green', disabled=True),
+         sg.Button("Выбрать дату", font=font_button, key='-DATA_REG-'),
+         sg.Push(),
+         sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)),
+         sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-', disabled_readonly_background_color='green', disabled=True),
+         sg.Button("Выбрать дату", font=font_button, key='-DATA_COM-')],
         [sg.Push()],
         [sg.Text("Заказчик:", font=font_button, size=(25, 2)), sg.Listbox([''' список заказчиков'''], font=font_button, size=(100, 2))],
         [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)), sg.Listbox([''' список лесопродукции'''], font=font_button, size=(100, 2))],
@@ -77,7 +83,15 @@ def orders_add(app,
             with open("file.json", "w") as file:
                 file.write(json_data)
             window.close()
-            return
+            return app
+        elif event == '-DATA_REG-':
+            selected_data = sg.popup_get_date()
+            if selected_data:
+                window['-DATA_REGISTRATION-'].update(f'{selected_data[1]}.{selected_data[0]}.{selected_data[2]}')
+        elif event == '-DATA_COM-':
+            selected_data = sg.popup_get_date()
+            if selected_data:
+                window['-DATA_COMPLETION-'].update(f'{selected_data[1]}.{selected_data[0]}.{selected_data[2]}')
         elif event == "Назад":
             window.close()
             return app
