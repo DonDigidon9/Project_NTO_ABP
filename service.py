@@ -32,11 +32,11 @@ def service(app):
             break
         if event == "Коммерция":
             window.Hide()
-            section_commerce(app)
+            app = section_commerce(app)
             window.UnHide()
         elif event == "Производство":
             window.Hide()
-            section_production(app)
+            app = section_production(app)
             window.UnHide()
         elif event == "Технолог":
             window.Hide()

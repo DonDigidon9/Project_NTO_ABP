@@ -46,7 +46,7 @@ def customers_add(app):
             with open("file.json", "w") as file:
                 file.write(json_data)
             window.close()
-            return
+            return App(**json.loads(json_data))
         elif event == "Назад":
             window.close()
-            return
+            return app

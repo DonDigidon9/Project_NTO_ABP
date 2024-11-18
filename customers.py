@@ -16,21 +16,17 @@ def customers(app):
 
     mas_customers = []
     for customer in app.customers_:
-        mas_customers.append(
-            customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer[
-                'comment'])
+        mas_customers.append(customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer['comment'])
 
     layout = [
         [sg.Text("Клиенты", justification='center', font=font_title, size=(monitor.width, 5),
                  pad=((0, 0), (50, 0)))],
-        [sg.Text("Организация / ФИО / дата начала сотрудничества", font=font_button),
-         sg.Button("Добавить", font=font_button)],
-        [sg.Listbox(mas_customers, size=(monitor.width, 10), font=font_button)],  # список клиентов
+        [sg.Text("Организация / ФИО / дата начала сотрудничества", font=font_button), sg.Button("Добавить", font=font_button)],
+        [sg.Listbox(mas_customers, size=(monitor.width, 10), font=font_button, key='-LIST-')], # список клиентов
         [sg.Button("Назад", font=font_button)]
     ]
 
     size_layout = (monitor.width, monitor.height)
-
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
     window.finalize()
 
@@ -41,8 +37,12 @@ def customers(app):
 
         if event == "Добавить":
             window.Hide()
-            customers_add(app)
+            app = customers_add(app)
+            new_mas_customers = []
+            for customer in app.customers_:
+                new_mas_customers.append(customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer['comment'])
+            window['-LIST-'].update(new_mas_customers)
             window.UnHide()
         elif event == "Назад":
             window.close()
-            return
+            return app

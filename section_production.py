@@ -36,7 +36,7 @@ def section_production(app):
             window.UnHide()
         elif event == "Заказы":
             window.Hide()
-            orders(app)
+            app = orders(app)
             window.UnHide()
         elif event == "Назад":
             window.close()

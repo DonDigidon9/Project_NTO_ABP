@@ -34,8 +34,11 @@ def orders_add(app,
         [sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")]
     ]
 
+    title_window = "Добавить заказ"
+    if order_register_date_fill != "":
+        title_window = "Изменить заказ"
     layout = [
-        [sg.Text("Добавить заказ", justification='center', font=font_title, size=(monitor.width, 2),
+        [sg.Text(title_window, justification='center', font=font_title, size=(monitor.width, 2),
                  pad=((0, 0), (10, 0)))],
         [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-'), sg.Push(),
          sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)), sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-')],
@@ -77,4 +80,4 @@ def orders_add(app,
             return
         elif event == "Назад":
             window.close()
-            return
+            return app

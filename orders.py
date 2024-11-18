@@ -100,12 +100,12 @@ def orders(app):
 
         if event == "Добавить":
             window.Hide()
-            orders_add(app, "", "", "", "", "", "", "")
+            app = orders_add(app, "", "", "", "", "", "", "")
             window.UnHide()
         elif event == "Назад":
-            break
+            return app
 
-        elif event.startswith("-ORDER-"):
+        elif event.startswith('-ORDER-'):
             order_index = int(event.split("-")[-2])
             selected_order = orders_data[order_index]
             order_register_date = selected_order['registration_date']
@@ -115,6 +115,6 @@ def orders(app):
             product_amount = selected_order['quantity']
             status =  selected_order['status']
             comment = selected_order['comment']
+            window.Hide()
             orders_add(app, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
-
-    window.close()
+            window.UnHide()

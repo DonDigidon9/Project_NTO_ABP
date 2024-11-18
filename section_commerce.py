@@ -35,7 +35,7 @@ def section_commerce(app):
             raise SystemExit(1)
         if event == "Клиенты":
             window.Hide()
-            customers(app)
+            app = customers(app)
             window.UnHide()
         elif event == "Виды лесопродукции":
             window.Hide()
@@ -43,7 +43,7 @@ def section_commerce(app):
             window.UnHide()
         elif event == "Заказы":
             window.Hide()
-            orders(app)
+            app = orders(app)
             window.UnHide()
         elif event == "Назад":
             window.close()
