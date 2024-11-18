@@ -67,7 +67,7 @@ def orders_add(app,
     ]
 
     size_layout = (monitor.width, monitor.height)
-    window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
+    window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
     selected_data_reg = None
     selected_data_com = None
