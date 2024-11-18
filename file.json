@@ -1,52 +1,13 @@
 {
     "customers_": [
         {
-            "organization": "test name",
-            "fio": "test fio",
-            "add_data": "test data",
-            "comment": "test comment"
+            "organization": "test name"
         },
         {
-            "organization": "wuecbwe",
-            "fio": "wiejcbw",
-            "add_data": "pojkernv",
-            "comment": "pwierjvbw"
+            "organization": "new test name"
         },
         {
-            "organization": "name",
-            "fio": "fio",
-            "add_data": "data",
-            "comment": "comment 111111111"
-        },
-        {
-            "organization": "new name",
-            "fio": "fio new",
-            "add_data": "data test",
-            "comment": "com new"
-        },
-        {
-            "organization": "",
-            "fio": "",
-            "add_data": "",
-            "comment": ""
-        },
-        {
-            "organization": "",
-            "fio": "",
-            "add_data": "",
-            "comment": ""
-        },
-        {
-            "organization": "",
-            "fio": "",
-            "add_data": "",
-            "comment": ""
-        },
-        {
-            "organization": "new test name",
-            "fio": "fio test",
-            "add_data": "data new",
-            "comment": "commment new"
+            "organization": "\u0435\u0443\u044b\u0435 \u0442\u0444\u044c\u0443"
         }
     ],
     "orders_": [

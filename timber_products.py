@@ -25,7 +25,6 @@ def timber_products(app):
 
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
-    window.finalize()
 
     while True:
         event, values = window.read()

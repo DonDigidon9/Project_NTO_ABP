@@ -8,7 +8,6 @@ def customers(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
 
-    size_button = (25, 5)
     font_title = ('New Roman', 30)
     font_button = ('New Roman', 20)
 
@@ -16,7 +15,7 @@ def customers(app):
 
     mas_customers = []
     for customer in app.customers_:
-        mas_customers.append(customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer['comment'])
+        mas_customers.append(customer['organization'])
 
     layout = [
         [sg.Text("Клиенты", justification='center', font=font_title, size=(monitor.width, 5),
@@ -28,7 +27,6 @@ def customers(app):
 
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
-    window.finalize()
 
     while True:
         event, values = window.read()
@@ -40,7 +38,7 @@ def customers(app):
             app = customers_add(app)
             new_mas_customers = []
             for customer in app.customers_:
-                new_mas_customers.append(customer['organization'] + ' / ' + customer['fio'] + ' / ' + customer['add_data'] + ' / ' + customer['comment'])
+                new_mas_customers.append(customer['organization'])
             window['-LIST-'].update(new_mas_customers)
             window.UnHide()
         elif event == "Назад":
