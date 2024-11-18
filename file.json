@@ -2,12 +2,6 @@
     "customers_": [
         {
             "organization": "test name"
-        },
-        {
-            "organization": "new test name"
-        },
-        {
-            "organization": "\u0435\u0443\u044b\u0435 \u0442\u0444\u044c\u0443"
         }
     ],
     "orders_": [
@@ -18,15 +12,6 @@
             "timber_product": "111",
             "cnt_timber_product": 11,
             "comment": "comment",
-            "status": "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a"
-        },
-        {
-            "data_registration": "",
-            "data_completion": "",
-            "customer": "test",
-            "timber_product": "111",
-            "cnt_timber_product": 11,
-            "comment": "",
             "status": "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a"
         }
     ],

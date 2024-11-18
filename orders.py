@@ -84,5 +84,5 @@ def orders(app):
             status =  selected_order['status']
             comment = selected_order['comment']
             window.Hide()
-            orders_add(app, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
+            app = orders_add(app, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
             window.UnHide()
