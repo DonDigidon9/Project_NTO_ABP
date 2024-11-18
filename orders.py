@@ -89,9 +89,9 @@ def orders(app):
             order_register_date = selected_order['registration_date']
             order_accomplishment_date = selected_order['completion_date']
             customer_name = selected_order['customer']
-            timer_product =  selected_order['product']
+            timer_product = selected_order['product']
             product_amount = selected_order['quantity']
-            status =  selected_order['status']
+            status = selected_order['status']
             comment = selected_order['comment']
             window.Hide()
             app = orders_add(app, uid, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)

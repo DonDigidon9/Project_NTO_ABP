@@ -42,7 +42,7 @@ def customers_add(app):
             new_customer = Customer(organization=values['-ORGANIZATION-'])
             app.customers_.append(new_customer)
             json_data = json.dumps(asdict(app), indent=4)
-            with open("file.json", "w") as file:
+            with open(".venv/file.json", "w") as file:
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))

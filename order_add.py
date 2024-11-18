@@ -132,7 +132,7 @@ def orders_add(app,
                 app.orders_[index]['comment'] = comment_fill if len(comment_fill) != 0 else values['-COMMENT-']
                 app.orders_[index]['status'] = values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик"
             json_data = json.dumps(asdict(app), indent=4)
-            with open("file.json", "w") as file:
+            with open(".venv/file.json", "w") as file:
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))
