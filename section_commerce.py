@@ -46,4 +46,4 @@ def section_commerce(app):
             window.UnHide()
         elif event == "Назад":
             window.close()
-            return
+            return app

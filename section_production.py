@@ -39,4 +39,4 @@ def section_production(app):
             window.UnHide()
         elif event == "Назад":
             window.close()
-            return
+            return app
