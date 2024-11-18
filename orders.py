@@ -25,63 +25,32 @@ def orders(app):
         else:
             return "white"  # По умолчанию
 
-    # Данные заказов
-    orders_data = [
-        {
-            "registration_date": "10.01.2024",
-            "completion_date": "01.02.2024",
-            "customer": "ООО Клиент 1",
-            "product": "Пиломатериалы",
-            "quantity": "100 куб.м",
-            "status": "Черновик",
-            "comment": "Ожидает согласования"
-        },
-        {
-            "registration_date": "15.01.2024",
-            "completion_date": "10.02.2024",
-            "customer": "ООО Клиент 2",
-            "product": "Фанера",
-            "quantity": "50 листов",
-            "status": "Согласован клиентом",
-            "comment": "Готов к производству"
-        },
-        {
-            "registration_date": "20.01.2024",
-            "completion_date": "15.02.2024",
-            "customer": "ООО Клиент 3",
-            "product": "Древесный уголь",
-            "quantity": "20 тонн",
-            "status": "Принят в производство",
-            "comment": "В процессе выполнения"
-        },
-        {
-            "registration_date": "25.01.2024",
-            "completion_date": "20.02.2024",
-            "customer": "ООО Клиент 4",
-            "product": "Паркет",
-            "quantity": "200 кв.м",
-            "status": "Выполнен",
-            "comment": "Готов к выдаче"
-        }
-    ]
+    orders_data = []
+    for order in app.orders_:
+        orders_data.append(
+            {
+                "registration_date": order['data_registration'],
+                "completion_date": order['data_completion'],
+                "customer": order['customer'],
+                "product": order['timber_product'],
+                "quantity": order['cnt_timber_product'],
+                "status": order['status'],
+                "comment": order['comment']
+            }
+        )
 
-    # Создание кнопок для каждого заказа
     listbox_elements = []
     for i, order in enumerate(orders_data):
-        # Формат текста кнопки
         button_text = (
             f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
             f"{order['product']} / {order['quantity']} / {order['status']}\n"
             f"{order['comment']}"
         )
-        # Определение цвета по статусу
         color = get_color_by_status(order["status"])
-        # Добавление кнопки
         listbox_elements.append(
             [sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)]
         )
 
-    # Макет интерфейса
     layout = [
         [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)))],
         [sg.Text("Дата регистрации / Дата выполнения / Заказчик / Продукция / Кол-во / Статус", font=font_button)],
@@ -89,7 +58,6 @@ def orders(app):
         [sg.Button("Добавить", font=font_button, size=(15, 1)), sg.Button("Назад", font=font_button, size=(15, 1))]
     ]
 
-    # Окно
     size_layout = (monitor.width, monitor.height)
     window = sg.Window(title, layout, size=size_layout, resizable=True, finalize=True)
 
