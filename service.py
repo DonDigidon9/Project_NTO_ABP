@@ -32,17 +32,14 @@ def service(app):
         if event == "Коммерция":
             window.Hide()
             app = section_commerce(app)
-            print(f'commerce -> {app}')
             window.UnHide()
         elif event == "Производство":
             window.Hide()
             app = section_production(app)
-            print(f'production -> {app}')
             window.UnHide()
         elif event == "Технолог":
             window.Hide()
             timber_products(app)
-            print(app)
             window.UnHide()
 
     window.close()
