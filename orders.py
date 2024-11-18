@@ -24,37 +24,48 @@ def orders(app):
         else:
             return "white"
 
-    orders_data = []
-    for order in app.orders_:
-        orders_data.append(
-            {
-                "uid": order['uid'],
-                "registration_date": order['data_registration'],
-                "completion_date": order['data_completion'],
-                "customer": order['customer'],
-                "product": order['timber_product'],
-                "quantity": order['cnt_timber_product'],
-                "status": order['status'],
-                "comment": order['comment']
-            }
-        )
+    def get_orders_data():
+        # Например, заказы
+        orders_data = []
+        for order in app.orders_:
+            orders_data.append(
+                {
+                    "uid": order['uid'],
+                    "registration_date": order['data_registration'],
+                    "completion_date": order['data_completion'],
+                    "customer": order['customer'],
+                    "product": order['timber_product'],
+                    "quantity": order['cnt_timber_product'],
+                    "status": order['status'],
+                    "comment": order['comment']
+                }
+            )
+        return orders_data
 
-    listbox_elements = []
-    for i, order in enumerate(orders_data):
-        button_text = (
-            f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
-            f"{order['product']} / {order['quantity']} / {order['status']}\n"
-            f"{order['comment']}"
-        )
-        color = get_color_by_status(order["status"])
-        listbox_elements.append(
-            [sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)]
-        )
+
+    def generate_listbox_elements(orders_data):
+        listbox_elements = []
+        for i, order in enumerate(orders_data):
+            button_text = (
+                f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
+                f"{order['product']} / {order['quantity']} / {order['status']}\n"
+                f"{order['comment']}"
+            )
+            color = get_color_by_status(order["status"])
+            listbox_elements.append(
+                [sg.Button(button_text, button_color=("black", color), font=font_button, size=(int(monitor.width / 16), 3),
+                           key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)]
+            )
+        return listbox_elements
+
+    # Инициализация первого лейаута
+    orders_data = get_orders_data()
+    listbox_elements = generate_listbox_elements(orders_data)
 
     layout = [
-        [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)))],
+        [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)), size=(monitor.width, 2))],
         [sg.Text("Дата регистрации / Дата выполнения / Заказчик / Продукция / Кол-во / Статус", font=font_button)],
-        [sg.Column(listbox_elements, scrollable=True, size=(monitor.width - 50, 500), vertical_scroll_only=True, key='-LIST-')],
+        [sg.Column(listbox_elements, scrollable=True, size=(monitor.width, 500), vertical_scroll_only=True, key='-LIST-')],
         [sg.Button("Добавить", font=font_button, size=(15, 1)), sg.Button("Назад", font=font_button, size=(15, 1))]
     ]
 
@@ -69,16 +80,19 @@ def orders(app):
         if event == "Добавить":
             window.Hide()
             app = orders_add(app, "", "", "", "", "", "", "", "")
-            # i = len(listbox_elements)
-            # order =
-            # button_text = (
-            #         f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
-            #         f"{order['product']} / {order['quantity']} / {order['status']}\n"
-            #         f"{order['comment']}"
-            #     )
-            # listbox_elements.append(
-            #     [sg.Button(button_text, button_color=("black", get_color_by_status(app.orders_[len(app.orders_) - 1]["status"])), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)])
-            window.UnHide()
+            window.close()
+            orders_data = get_orders_data()
+            listbox_elements = generate_listbox_elements(orders_data)
+            layout = [
+                [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)), size=(monitor.width, 2))],
+                [sg.Text("Дата регистрации / Дата выполнения / Заказчик / Продукция / Кол-во / Статус",
+                         font=font_button)],
+                [sg.Column(listbox_elements, scrollable=True, size=(monitor.width - 50, 500), vertical_scroll_only=True,
+                           key='-LIST-')],
+                [sg.Button("Добавить", font=font_button, size=(15, 1)),
+                 sg.Button("Назад", font=font_button, size=(15, 1))]
+            ]
+            window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
         elif event == "Назад":
             return app
 
@@ -95,11 +109,16 @@ def orders(app):
             comment = selected_order['comment']
             window.Hide()
             app = orders_add(app, uid, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
-            # i = len(listbox_elements) - 1
-            # for order in app.orders_:
-            #     button_text = order['data_registration'] + " / " + order['data_completion'] + " / " + order['customer'] + " / " + order['timber_product'] + " / " + str(order['cnt_timber_product']) + " / " + order['status'] + "\n" + order['comment']
-            #     color = get_color_by_status(order['status'])
-            #     listbox_elements.append(sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5))
-            #     i += 1
-            # window['-LIST-'].update(listbox_elements)
-            window.UnHide()
+            window.close()
+            orders_data = get_orders_data()
+            listbox_elements = generate_listbox_elements(orders_data)
+            layout = [
+                [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)), size=(monitor.width, 2))],
+                [sg.Text("Дата регистрации / Дата выполнения / Заказчик / Продукция / Кол-во / Статус",
+                         font=font_button)],
+                [sg.Column(listbox_elements, scrollable=True, size=(monitor.width - 50, 500), vertical_scroll_only=True,
+                           key='-LIST-')],
+                [sg.Button("Добавить", font=font_button, size=(15, 1)),
+                 sg.Button("Назад", font=font_button, size=(15, 1))]
+            ]
+            window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
