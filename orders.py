@@ -94,6 +94,7 @@ def orders(app):
             ]
             window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
         elif event == "Назад":
+            window.close()
             return app
 
         elif event.startswith('-ORDER-'):
