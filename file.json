@@ -12,22 +12,14 @@
     ],
     "orders_": [
         {
-            "data_registration": "data reg",
-            "data_completion": "data comp",
-            "customer": "test",
-            "timber_product": "111",
-            "cnt_timber_product": 11,
-            "comment": "comment",
-            "status": "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a"
-        },
-        {
+            "uid": "d78259c13d0a4b7b9ce937cb26970f7c",
             "data_registration": "18.11.2024",
-            "data_completion": "21.11.2024",
-            "customer": "test",
-            "timber_product": "111",
+            "data_completion": "20.11.2024",
+            "customer": "\u041a\u043b\u0438\u0435\u043d\u0442 \u041e\u043b\u044c\u0433\u0430 \u0425\u0443\u0439",
+            "timber_product": "\u0411\u0440\u0443\u0441",
             "cnt_timber_product": 1488,
-            "comment": "",
-            "status": "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a"
+            "comment": "job",
+            "status": "\u041f\u0440\u0438\u043d\u044f\u0442 \u0432 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0441\u0442\u0432\u043e"
         }
     ],
     "timber_products_": [

@@ -1,4 +1,5 @@
 import json
+import uuid
 from dataclasses import asdict
 
 import PySimpleGUI as sg
@@ -18,6 +19,7 @@ def open_window_fail():
     window_fail.close()
 
 def orders_add(app,
+        uid,
         order_register_date_fill,
         order_accomplishment_date_fill,
         customer_name_fill,
@@ -50,8 +52,8 @@ def orders_add(app,
     status_listbox_visible = False
 
     layout = [
-        [sg.Text(title_window, justification='center', font=font_title, size=(monitor.width, 2),
-                 pad=((0, 0), (10, 0)))],
+        [sg.Text(title_window, justification='center', font=font_title, size=(monitor.width, 2), pad=((0, 0), (10, 0)))],
+
         [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-', disabled_readonly_background_color='green', disabled=True),
          sg.Button("Дата", font=font_button, key='-DATA_REG-'),
@@ -59,52 +61,76 @@ def orders_add(app,
          sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-', disabled_readonly_background_color='green', disabled=True),
          sg.Button("Дата", font=font_button, key='-DATA_COM-')],
+
         [sg.Push()],
-        [sg.Text("Заказчик:", font=font_button, size=(25, 2)), sg.Listbox(mas_customer, visible=False, font=font_button, size=(100, 4), key='-CUSTOMER_LISTBOX-'),
-         sg.Button("Показать варианты", key="-TOGGLE_CUSTOMER-", font=font_button)],
-        [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)), sg.Listbox(mas_timber_product, visible=False, font=font_button, size=(100, 4), key='-TIMBER_LISTBOX-'),
-         sg.Button("Показать варианты", key="-TOGGLE_TIMBER-", font=font_button)],
-        [sg.Text("Количество лесопродукции:", font=font_button, size=(25, 2)), sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-")],
-        [sg.Text("Статус:", font=font_button, size=(25, 2)), sg.Listbox(mas_status, visible=False, font=font_button, size=(100, 4), key='-STATUS_LISTBOX-'),
+
+        [sg.Text("Заказчик:", font=font_button, size=(25, 2)),
+         sg.Listbox(mas_customer, visible=False, font=font_button, size=(100, 4), key='-CUSTOMER_LISTBOX-') if len(customer_name_fill) == 0 else sg.Text(customer_name_fill, font=font_button, background_color='green', key='-CUSTOMER_TEXT-'),
+         sg.Button("Показать варианты", key="-TOGGLE_CUSTOMER-", font=font_button) if len(customer_name_fill) == 0 else sg.Push()],
+
+        [sg.Text("Вид лесопродукции:", font=font_button, size=(25, 2)),
+         sg.Listbox(mas_timber_product, visible=False, font=font_button, size=(100, 4), key='-TIMBER_LISTBOX-') if len(timer_product_fill) == 0 else sg.Text(timer_product_fill, font=font_button, background_color='green'),
+         sg.Button("Показать варианты", key="-TOGGLE_TIMBER-", font=font_button) if len(timer_product_fill) == 0 else sg.Push()],
+
+        [sg.Text("Количество лесопродукции:", font=font_button, size=(25, 2)),
+         sg.InputText(product_amount_fill, size=(15, 1), font=font_button, key="-INPUT-") if len(str(product_amount_fill)) == 0 else sg.InputText(product_amount_fill, size=(15, 1), font=font_button, disabled_readonly_background_color='green', disabled=True, key="-INPUT-")],
+
+        [sg.Text("Статус:", font=font_button, size=(25, 2)),
+         sg.Listbox(mas_status, visible=False, font=font_button, size=(100, 4), key='-STATUS_LISTBOX-', default_values=status_fill),
          sg.Button("Показать варианты", key="-TOGGLE_STATUS-", font=font_button)],
+
         [sg.Text("Комментарий:", font=font_button, size=(25, 2)), sg.Multiline(default_text=comment_fill, font=font_button, size=(100, 4), key='-COMMENT-')],
+
         [sg.Push()],
+
         [sg.Button("Сохранить", font=font_button)],
+
         [sg.Button("Назад", font=font_button)]
     ]
 
-    size_layout = (monitor.width, monitor.height)
+    size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
-    selected_data_reg = None
-    selected_data_com = None
+    selected_data_reg = order_register_date_fill
+    selected_data_com = order_accomplishment_date_fill
     while True:
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             raise SystemExit(1)
 
         if event == "Сохранить":
-            if ((selected_data_reg is None) or (selected_data_com is None) or
+            if ((selected_data_reg == "") or (selected_data_com == "") or
                     (selected_data_reg[2] > selected_data_com[2]) or
                     (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
                     (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1])):
                 open_window_fail()
                 continue
             try:
-                cnt = int(values['-INPUT-'])
+                if len(values['-INPUT-']) == 0:
+                    cnt = ""
+                else:
+                    cnt = int(values['-INPUT-'])
             except ValueError:
                 open_window_fail()
                 continue
-            new_order = Order(
-                data_registration=values['-DATA_REGISTRATION-'],
-                data_completion=values['-DATA_COMPLETION-'],
-                customer="test",
-                timber_product="111",
-                cnt_timber_product=cnt,
-                comment=values['-COMMENT-'],
-                status="Черновик"
-            )
-            app.orders_.append(new_order)
+            if title_window == "Добавить заказ":
+                new_order = Order(
+                    uid=uuid.uuid4().hex,
+                    data_registration=values['-DATA_REGISTRATION-'],
+                    data_completion=values['-DATA_COMPLETION-'],
+                    customer=values['-CUSTOMER_LISTBOX-'][0] if len(customer_name_fill) == 0 and len(values['-CUSTOMER_LISTBOX-']) != 0 else "",
+                    timber_product=values['-TIMBER_LISTBOX-'][0] if len(values['-TIMBER_LISTBOX-']) != 0 else "",
+                    cnt_timber_product=cnt,
+                    comment=values['-COMMENT-'][0] if len(values['-COMMENT-']) != 0 else "",
+                    status=values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик")
+                app.orders_.append(new_order)
+            else:
+                index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
+                app.orders_[index]['customer'] = customer_name_fill if len(customer_name_fill) != 0 else values['-CUSTOMER_LISTBOX-'][0]
+                app.orders_[index]['timber_product'] = timer_product_fill if len(timer_product_fill) != 0 else values['TIMBER_LISTBOX'][0]
+                app.orders_[index]['cnt_timber_product'] = cnt
+                app.orders_[index]['comment'] = comment_fill if len(comment_fill) != 0 else values['-COMMENT-']
+                app.orders_[index]['status'] = values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик"
             json_data = json.dumps(asdict(app), indent=4)
             with open("file.json", "w") as file:
                 file.write(json_data)

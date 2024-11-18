@@ -15,19 +15,20 @@ def orders(app):
     def get_color_by_status(status):
         if status == "Черновик":
             return "white"
-        elif status == "Согласован клиентом":
+        elif status == "Согласован с клиентом":
             return "orange"
         elif status == "Принят в производство":
             return "yellow"
         elif status == "Выполнен":
             return "green"
         else:
-            return "white"  # По умолчанию
+            return "white"
 
     orders_data = []
     for order in app.orders_:
         orders_data.append(
             {
+                "uid": order['uid'],
                 "registration_date": order['data_registration'],
                 "completion_date": order['data_completion'],
                 "customer": order['customer'],
@@ -53,7 +54,7 @@ def orders(app):
     layout = [
         [sg.Text("Заказы", justification='center', font=font_title, pad=((0, 0), (20, 10)))],
         [sg.Text("Дата регистрации / Дата выполнения / Заказчик / Продукция / Кол-во / Статус", font=font_button)],
-        [sg.Column(listbox_elements, scrollable=True, size=(monitor.width - 50, 500), vertical_scroll_only=True)],
+        [sg.Column(listbox_elements, scrollable=True, size=(monitor.width - 50, 500), vertical_scroll_only=True, key='-LIST-')],
         [sg.Button("Добавить", font=font_button, size=(15, 1)), sg.Button("Назад", font=font_button, size=(15, 1))]
     ]
 
@@ -67,7 +68,16 @@ def orders(app):
 
         if event == "Добавить":
             window.Hide()
-            app = orders_add(app, "", "", "", "", "", "", "")
+            app = orders_add(app, "", "", "", "", "", "", "", "")
+            # i = len(listbox_elements)
+            # order =
+            # button_text = (
+            #         f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
+            #         f"{order['product']} / {order['quantity']} / {order['status']}\n"
+            #         f"{order['comment']}"
+            #     )
+            # listbox_elements.append(
+            #     [sg.Button(button_text, button_color=("black", get_color_by_status(app.orders_[len(app.orders_) - 1]["status"])), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)])
             window.UnHide()
         elif event == "Назад":
             return app
@@ -75,6 +85,7 @@ def orders(app):
         elif event.startswith('-ORDER-'):
             order_index = int(event.split("-")[-2])
             selected_order = orders_data[order_index]
+            uid = selected_order['uid']
             order_register_date = selected_order['registration_date']
             order_accomplishment_date = selected_order['completion_date']
             customer_name = selected_order['customer']
@@ -83,5 +94,12 @@ def orders(app):
             status =  selected_order['status']
             comment = selected_order['comment']
             window.Hide()
-            app = orders_add(app, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
+            app = orders_add(app, uid, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
+            # i = len(listbox_elements) - 1
+            # for order in app.orders_:
+            #     button_text = order['data_registration'] + " / " + order['data_completion'] + " / " + order['customer'] + " / " + order['timber_product'] + " / " + str(order['cnt_timber_product']) + " / " + order['status'] + "\n" + order['comment']
+            #     color = get_color_by_status(order['status'])
+            #     listbox_elements.append(sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5))
+            #     i += 1
+            # window['-LIST-'].update(listbox_elements)
             window.UnHide()

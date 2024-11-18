@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Order:
+    uid: str
     data_registration: str
     data_completion: str
     customer: str
