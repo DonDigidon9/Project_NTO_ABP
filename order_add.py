@@ -116,7 +116,7 @@ def orders_add(app,
 
         [sg.Button("Назад", font=font_button)],
         [sg.Push()],
-        [sg.Button("Удалить заказ", font=font_button, button_color='red', key='-DELETE-')]
+        [sg.Button("Удалить заказ", font=font_button, button_color='red', key='-DELETE-') if len(order_register_date_fill) != 0 else sg.Push()]
     ]
 
     size_layout = (monitor.width, monitor.height - 1)
@@ -153,7 +153,7 @@ def orders_add(app,
                         open_window_fail("Данный статус невозможно выбрать при регистрации заказа")
                         continue
                     if values['-STATUS_LISTBOX-'][0] == "Согласован с клиентом":
-                        if ('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') not in values or len(str(cnt)) == 0:
+                        if '-CUSTOMER_LISTBOX-' not in values or '-TIMBER_LISTBOX-' not in values or len(str(cnt)) == 0:
                             open_window_fail("Проверьте выбор клиента и вид лесопродукции")
                             continue
                 new_order = Order(
