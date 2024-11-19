@@ -6,13 +6,16 @@ from service import service
 from LogicClasses.App import App
 
 # Определение базового пути
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):  # Проверка существования _MEIPASS
-    base_path = sys._MEIPASS
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):  # Проверка на скомпилированное приложение
+    base_path = sys._MEIPASS  # Путь к временной папке, куда PyInstaller распаковывает файлы
 else:
-    base_path = os.path.dirname(__file__)
+    base_path = os.path.dirname(__file__)  # Путь к текущему скрипту в режиме разработки
 
-# Если файл находится в ".venv"
-json_path = os.path.join(base_path, '.venv', 'file.json')
+# Если в режиме разработки, путь к файлу должен быть в .venv
+if not getattr(sys, 'frozen', False):  # Только в режиме разработки
+    json_path = os.path.join(base_path, '.venv', 'file.json')  # Путь к файлу в .venv
+else:
+    json_path = os.path.join(base_path, 'file.json')  # В скомпилированном приложении, файл должен быть в корне
 
 # Проверка существования файла
 if not os.path.exists(json_path):

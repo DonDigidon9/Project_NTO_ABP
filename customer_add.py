@@ -8,6 +8,19 @@ from LogicClasses.App import App
 from LogicClasses.Customer import Customer
 from order_add import open_window_fail
 
+import json
+import os
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):  # Проверка существования _MEIPASS
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(__file__)
+
+# Функция для получения пути к файлу JSON
+def get_json_path():
+    return os.path.join(base_path, '.venv', 'file.json')
+
 def customers_add(app):
     monitor = get_monitors()[0]
     sg.theme("DarkGreen7")
@@ -42,7 +55,8 @@ def customers_add(app):
             new_customer = Customer(organization=values['-ORGANIZATION-'])
             app.customers_.append(new_customer)
             json_data = json.dumps(asdict(app), indent=4)
-            with open(".venv/file.json", "w") as file:
+            json_path = get_json_path()
+            with open(json_path, "w") as file:
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))

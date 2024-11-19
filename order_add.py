@@ -8,6 +8,19 @@ from screeninfo import get_monitors
 from LogicClasses.App import App
 from LogicClasses.Order import Order
 
+import json
+import os
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):  # Проверка существования _MEIPASS
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(__file__)
+
+# Функция для получения пути к файлу JSON
+def get_json_path():
+    return os.path.join(base_path, '.venv', 'file.json')
+
 def open_window_fail(fail):
     layout_fail = [[sg.Text(fail, font=('New Roman', 20))], [sg.OK(key='-OK-')]]
     window_fail = sg.Window("", layout_fail)
@@ -171,7 +184,8 @@ def orders_add(app,
                 app.orders_[index]['comment'] = values['-COMMENT-']
                 app.orders_[index]['status'] = values['-STATUS_LISTBOX-'][0] if len(values['-STATUS_LISTBOX-']) != 0 else "Черновик"
             json_data = json.dumps(asdict(app), indent=4)
-            with open(".venv/file.json", "w") as file:
+            json_path = get_json_path()
+            with open(json_path, "w") as file:
                 file.write(json_data)
             window.close()
             return App(**json.loads(json_data))
@@ -201,7 +215,8 @@ def orders_add(app,
                 index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
                 del app.orders_[index]
                 json_data = json.dumps(asdict(app), indent=4)
-                with open(".venv/file.json", "w") as file:
+                json_path = get_json_path()
+                with open(json_path, "w") as file:
                     file.write(json_data)
                 return app
         elif event == "Назад":
