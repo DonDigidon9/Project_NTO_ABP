@@ -45,11 +45,11 @@ def orders(app):
             button_text = (
                 f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
                 f"{order['product']} / {order['quantity']} / {order['status']}\n"
-                f"{order['comment']}"
+                f"{order['comment'][:10]}"
             )
             color = get_color_by_status(order["status"])
             listbox_elements.append(
-                [sg.Button(button_text, button_color=("black", color), font=font_button, size=(80, 3),
+                [sg.Button(button_text, button_color=("black", color), font=font_button, size=(int(monitor.width / 16), 3),
                            key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)]
             )
 

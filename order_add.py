@@ -18,6 +18,22 @@ def open_window_fail(fail):
             break
     window_fail.close()
 
+def open_double_check():
+    layout_check = [
+        [sg.Text("Вы уверены, что хотите удалить этот заказ?", font=('New Roman', 20))],
+        [sg.Button("ДА", font=('New Roman', 15), button_color='red'), sg.Push(), sg.Button("НЕТ", font=('New Roman', 15), button_color='green')]
+    ]
+    window_ckeck = sg.Window("", layout_check)
+
+    while True:
+        event_ckeck, values_ckeck = window_ckeck.read()
+        if event_ckeck in (sg.WIN_CLOSED, 'НЕТ'):
+            window_ckeck.close()
+            return False
+        else:
+            window_ckeck.close()
+            return True
+
 def orders_add(app,
         uid,
         order_register_date_fill,
@@ -56,11 +72,11 @@ def orders_add(app,
 
         [sg.Text("Дата регистрации заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_register_date_fill, size=(15, 1), font=font_button, key='-DATA_REGISTRATION-', disabled_readonly_background_color='green', disabled=True),
-         sg.Button("Дата", font=font_button, key='-DATA_REG-'),
+         sg.Button("Дата", font=font_button, key='-DATA_REG-') if len(order_register_date_fill) == 0 else sg.Push(),
          sg.Push(),
          sg.Text("Дата выполнения заказа:", font=font_button, size=(25, 1)),
          sg.InputText(default_text=order_accomplishment_date_fill, size=(15, 1), font=font_button, key='-DATA_COMPLETION-', disabled_readonly_background_color='green', disabled=True),
-         sg.Button("Дата", font=font_button, key='-DATA_COM-')],
+         sg.Button("Дата", font=font_button, key='-DATA_COM-') if len(order_accomplishment_date_fill) == 0 else sg.Push()],
 
         [sg.Push()],
 
@@ -83,9 +99,11 @@ def orders_add(app,
 
         [sg.Push()],
 
-        [sg.Button("Сохранить", font=font_button)],
+        [sg.Button("Сохранить", font=font_button, button_color='green')],
 
-        [sg.Button("Назад", font=font_button)]
+        [sg.Button("Назад", font=font_button)],
+        [sg.Push()],
+        [sg.Button("Удалить заказ", font=font_button, button_color='red', key='-DELETE-')]
     ]
 
     size_layout = (monitor.width, monitor.height - 1)
@@ -99,7 +117,7 @@ def orders_add(app,
             raise SystemExit(1)
 
         if event == "Сохранить":
-            if len(selected_data_reg) == 0 and len(selected_data_com) == 0:
+            if type(selected_data_reg) != str and type(selected_data_com) != str:
                 if ((selected_data_reg == "") or (selected_data_com == "") or
                         (selected_data_reg[2] > selected_data_com[2]) or
                         (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
@@ -121,10 +139,7 @@ def orders_add(app,
                     if values['-STATUS_LISTBOX-'][0] in ("Принят в производство", "Выполнен"):
                         open_window_fail("Данный статус невозможно выбрать при регистрации заказа")
                         continue
-                    print(values)
-                    print(cnt)
                     if values['-STATUS_LISTBOX-'][0] == "Согласован с клиентом":
-                        print(('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') in values)
                         if ('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') not in values or len(str(cnt)) == 0:
                             open_window_fail("Проверьте выбор клиента и вид лесопродукции")
                             continue
@@ -149,7 +164,6 @@ def orders_add(app,
                     if len(str(cnt)) == 0:
                         open_window_fail("Для данного стутаса необходимо ввести количество лесопродукции")
                         continue
-                print(values)
                 index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
                 app.orders_[index]['customer'] = customer_name_fill if len(customer_name_fill) != 0 else values['-CUSTOMER_LISTBOX-'][0] if len(values['-CUSTOMER_LISTBOX-']) != 0 else ""
                 app.orders_[index]['timber_product'] = timer_product_fill if len(timer_product_fill) != 0 else values['-TIMBER_LISTBOX-'][0] if len(values['-TIMBER_LISTBOX-']) != 0 else ""
@@ -181,6 +195,15 @@ def orders_add(app,
             selected_data_com = sg.popup_get_date()
             if selected_data_com:
                 window['-DATA_COMPLETION-'].update(f'{selected_data_com[1]}.{selected_data_com[0]}.{selected_data_com[2]}')
+        elif event == '-DELETE-':
+            if open_double_check():
+                window.close()
+                index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
+                del app.orders_[index]
+                json_data = json.dumps(asdict(app), indent=4)
+                with open(".venv/file.json", "w") as file:
+                    file.write(json_data)
+                return app
         elif event == "Назад":
             window.close()
             return app
