@@ -80,6 +80,7 @@ def orders(app):
             #     [sg.Button(button_text, button_color=("black", get_color_by_status(app.orders_[len(app.orders_) - 1]["status"])), font=font_button, size=(80, 3), key=f"-ORDER-{i}-", pad=(0, 5), border_width=5)])
             window.UnHide()
         elif event == "Назад":
+            window.close()
             return app
 
         elif event.startswith('-ORDER-'):
