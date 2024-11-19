@@ -8,8 +8,8 @@ from screeninfo import get_monitors
 from LogicClasses.App import App
 from LogicClasses.Order import Order
 
-def open_window_fail():
-    layout_fail = [[sg.Text("Проверьте правильность введенных данных", font=('New Roman', 20))], [sg.OK(key='-OK-')]]
+def open_window_fail(fail):
+    layout_fail = [[sg.Text(fail, font=('New Roman', 20))], [sg.OK(key='-OK-')]]
     window_fail = sg.Window("", layout_fail)
 
     while True:
@@ -99,31 +99,34 @@ def orders_add(app,
             raise SystemExit(1)
 
         if event == "Сохранить":
-            if ((selected_data_reg == "") or (selected_data_com == "") or
-                    (selected_data_reg[2] > selected_data_com[2]) or
-                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
-                    (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1])):
-                open_window_fail()
-                continue
+            if len(selected_data_reg) == 0 and len(selected_data_com) == 0:
+                if ((selected_data_reg == "") or (selected_data_com == "") or
+                        (selected_data_reg[2] > selected_data_com[2]) or
+                        (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] > selected_data_com[0]) or
+                        (selected_data_reg[2] == selected_data_com[2] and selected_data_reg[0] == selected_data_com[0] and selected_data_reg[1] >= selected_data_com[1])):
+                    open_window_fail("Неверно выбраны даты: дата регистрации должна быть раньше даты выполнения заказа")
+                    continue
             try:
                 if len(values['-INPUT-']) == 0:
                     cnt = ""
                 else:
                     cnt = int(values['-INPUT-'])
+                    if cnt <= 0:
+                        int("fail")
             except ValueError:
-                open_window_fail()
+                open_window_fail("Введите целое положительное число - сумму")
                 continue
             if title_window == "Добавить заказ":
                 if len(values['-STATUS_LISTBOX-']) != 0:
                     if values['-STATUS_LISTBOX-'][0] in ("Принят в производство", "Выполнен"):
-                        open_window_fail()
+                        open_window_fail("Данный статус невозможно выбрать при регистрации заказа")
                         continue
                     print(values)
                     print(cnt)
                     if values['-STATUS_LISTBOX-'][0] == "Согласован с клиентом":
                         print(('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') in values)
                         if ('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') not in values or len(str(cnt)) == 0:
-                            open_window_fail()
+                            open_window_fail("Проверьте выбор клиента и вид лесопродукции")
                             continue
                 new_order = Order(
                     uid=uuid.uuid4().hex,
@@ -138,13 +141,13 @@ def orders_add(app,
             else:
                 if values['-STATUS_LISTBOX-'][0] in ("Согласован с клиентом", "Принят в производство", "Выполнен"):
                     if ('-CUSTOMER_LISTBOX-' not in values or len(values['-CUSTOMER_LISTBOX-']) == 0) and len(customer_name_fill) == 0:
-                        open_window_fail()
+                        open_window_fail("Для данного статуса необходимо выбрать заказчика")
                         continue
                     if ('-TIMBER_LISTBOX-' not in values or len(values['-TIMBER_LISTBOX-']) == 0) and len(timer_product_fill) == 0:
-                        open_window_fail()
+                        open_window_fail("Для данного статуса необходимо выбрать вид лесопродукции")
                         continue
                     if len(str(cnt)) == 0:
-                        open_window_fail()
+                        open_window_fail("Для данного стутаса необходимо ввести количество лесопродукции")
                         continue
                 print(values)
                 index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)

@@ -73,6 +73,7 @@ def orders(app):
         if event == "Добавить":
             window.close()
             app = orders_add(app, "", "", "", "", "", "", "", "")
+            orders_data = []
             window = sg.Window(title, get_layout(app), size=size_layout, resizable=False, finalize=True)
         elif event == "Назад":
             window.close()
@@ -91,4 +92,5 @@ def orders(app):
             comment = selected_order['comment']
             window.close()
             app = orders_add(app, uid, order_register_date, order_accomplishment_date, customer_name, timer_product, product_amount, comment, status)
+            orders_data = []
             window = sg.Window(title, get_layout(app), size=size_layout, resizable=False, finalize=True)

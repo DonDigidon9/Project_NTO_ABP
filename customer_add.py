@@ -37,7 +37,7 @@ def customers_add(app):
 
         if event == "Сохранить":
             if len(values['-ORGANIZATION-']) == 0:
-                open_window_fail()
+                open_window_fail("Введите название")
                 continue
             new_customer = Customer(organization=values['-ORGANIZATION-'])
             app.customers_.append(new_customer)
