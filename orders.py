@@ -45,7 +45,7 @@ def orders(app):
             button_text = (
                 f"{order['registration_date']} / {order['completion_date']} / {order['customer']} / "
                 f"{order['product']} / {order['quantity']} / {order['status']}\n"
-                f"{order['comment'][:10]}"
+                f"{order['comment'][:100]}"
             )
             color = get_color_by_status(order["status"])
             listbox_elements.append(
