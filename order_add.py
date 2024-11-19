@@ -114,11 +114,14 @@ def orders_add(app,
                 open_window_fail()
                 continue
             if title_window == "Добавить заказ":
-                if '-STATUS_LISTBOX-' in values:
-                    if values['-STATUS_LISTBOX-'] in ("Принят в производство", "Выполнен"):
+                if len(values['-STATUS_LISTBOX-']) != 0:
+                    if values['-STATUS_LISTBOX-'][0] in ("Принят в производство", "Выполнен"):
                         open_window_fail()
                         continue
-                    elif values['-STATUS_LISTBOX-'] == "Согласован с клиентом":
+                    print(values)
+                    print(cnt)
+                    if values['-STATUS_LISTBOX-'][0] == "Согласован с клиентом":
+                        print(('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') in values)
                         if ('-CUSTOMER_LISTBOX-', '-TIMBER_LISTBOX-') not in values or len(str(cnt)) == 0:
                             open_window_fail()
                             continue
