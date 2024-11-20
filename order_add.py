@@ -119,6 +119,7 @@ def orders_add(app,
         [sg.Button("Удалить заказ", font=font_button, button_color='red', key='-DELETE-') if len(order_register_date_fill) != 0 else sg.Push()]
     ]
 
+
     size_layout = (monitor.width, monitor.height - 1)
     window = sg.Window(title, layout, size=size_layout, resizable=False, finalize=True)
 
