@@ -130,6 +130,9 @@ def orders_add(app,
             raise SystemExit(1)
 
         if event == "Сохранить":
+            if len(selected_data_reg) == 0 or len(selected_data_com) == 0:
+                open_window_fail("Необходимо выбрать все даты")
+                continue
             if type(selected_data_reg) != str and type(selected_data_com) != str:
                 if ((selected_data_reg == "") or (selected_data_com == "") or
                         (selected_data_reg[2] > selected_data_com[2]) or
