@@ -19,7 +19,13 @@ else:
 
 # Функция для получения пути к файлу JSON
 def get_json_path():
-    return os.path.join(base_path, '.venv', 'file.json')
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):  # Сборка через PyInstaller
+        base_path = sys._MEIPASS
+        return os.path.join(base_path, 'file.json')  # Файл JSON должен быть в корне сборки
+    else:  # Режим разработки
+        base_path = os.path.dirname(__file__)
+        return os.path.join(base_path, '.venv', 'file.json')  # Путь к файлу в .venv
+
 
 def open_window_fail(fail):
     layout_fail = [[sg.Text(fail, font=('New Roman', 20))], [sg.OK(key='-OK-')]]
@@ -219,7 +225,7 @@ def orders_add(app,
                 index = next((index for index, dictionary in enumerate(app.orders_) if dictionary['uid'] == uid), None)
                 del app.orders_[index]
                 json_data = json.dumps(asdict(app), indent=4)
-                json_path = get_json_path()
+                json_path = get_json_path()  # Получаем корректный путь к файлу
                 with open(json_path, "w") as file:
                     file.write(json_data)
                 return app
