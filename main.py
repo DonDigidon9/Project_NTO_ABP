@@ -12,10 +12,12 @@ else:
     base_path = os.path.dirname(__file__)  # Путь к текущему скрипту в режиме разработки
 
 # Если в режиме разработки, путь к файлу должен быть в .venv
-if not getattr(sys, 'frozen', False):  # Только в режиме разработки
-    json_path = os.path.join(base_path, '.venv', 'file.json')  # Путь к файлу в .venv
+if getattr(sys, 'frozen', False):
+    # В скомпилированном приложении, файл должен быть в папке .venv, которая распакована в TEMP
+    json_path = os.path.join(base_path, '.venv', 'file.json')
 else:
-    json_path = os.path.join(base_path, 'file.json')  # В скомпилированном приложении, файл должен быть в корне
+    json_path = os.path.join(base_path, '.venv', 'file.json')
+
 
 # Проверка существования файла
 if not os.path.exists(json_path):
